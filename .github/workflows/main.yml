@@ -1,10 +1,10 @@
 name: CI-SFTP
  
-# Controls when the action will  
+# Controls when the action will run. 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ master ]
+    branches: [ main ]
 #  pull_request:
 #    branches: [ main ]
  
@@ -24,14 +24,15 @@ jobs:
         uses: wlixcc/SFTP-Deploy-Action@v1.2.1
         with:
           username: ubuntu
-          server:  ec2-52-66-198-158.ap-south-1.compute.amazonaws.com
+          server: ssh -i "Jenkins.pem" ubuntu@ec2-52-66-198-158.ap-south-1.compute.amazonaws.com
           port: 22 # default is 22
-          ssh_private_key: ${{ secrets.TEST_INSTANCE_KEY }}
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+ 
           
           # will put all file under this path
           local_path: ./* # default is ./*
           # files will copy to under remote_path
-          remote_path: /var/
-                    
+          remote_path: /var/www
+          
           # sftp args
-          args: '-o ConnectTimeout=5' 
+          args: '-o ConnectTimeout=5'
